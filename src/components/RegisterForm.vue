@@ -112,7 +112,9 @@
 
 <script>
 // import firebase from '@/includes/firebase'
-import { auth } from '@/includes/firebase'
+import { auth, usersCollection } from '@/includes/firebase'
+import { mapWritableState } from 'pinia'
+import useUserStore from '@/stores/user'
 
 export default {
   name: 'RegisterForm',
@@ -137,6 +139,9 @@ export default {
       reg_alert_msg: 'Please wait! Your account is being created.'
     }
   },
+  computed: {
+    ...mapWritableState(useUserStore, ['userLoggedIn'])
+  },
   methods: {
     async register(values) {
       this.reg_show_alert = true
@@ -153,6 +158,22 @@ export default {
         this.reg_alert_msg = 'An unexpected error occured. Please try again later.'
         return
       }
+
+      try {
+        await usersCollection.add({
+          name: values.name,
+          email: values.email,
+          age: values.age,
+          country: values.country
+        })
+      } catch (error) {
+        this.reg_in_submission = false
+        this.reg_alert_variant = 'bg-red-500'
+        this.reg_alert_msg = 'An unexpected error occured. Please try again later.'
+        return
+      }
+
+      this.userStore.userLoggedIn = true
 
       this.reg_alert_variant = 'bg-green-500'
       this.reg_alert_msg = 'Success! Your account has been created.'
