@@ -8,11 +8,18 @@ import './includes/firebase'
 
 import './assets/tailwind.css'
 import './assets/main.css'
+import { auth } from './includes/firebase'
 
-const app = createApp(App)
+let app
 
-app.use(createPinia())
-app.use(router)
-app.use(VeeValidatePlugin, { foo: 100 })
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App)
 
-app.mount('#app')
+    app.use(createPinia())
+    app.use(router)
+    app.use(VeeValidatePlugin, { foo: 100 })
+
+    app.mount('#app')
+  }
+})
