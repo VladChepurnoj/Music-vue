@@ -18,9 +18,17 @@ const routes = [
   },
   {
     name: 'manage',
-
-    path: '/manage',
+    // alias: '/manage',
+    path: '/manage-music',
     component: Manage
+  },
+  {
+    path: '/manage',
+    redirect: { name: 'manage' }
+  },
+  {
+    path: '/:catchAll(.*)*',
+    redirect: { name: 'home' }
   }
 ]
 
@@ -28,6 +36,13 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   linkExactActiveClass: 'text-yellow-500'
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('Global buard')
+  console.log(to, from)
+
+  next()
 })
 
 export default router
