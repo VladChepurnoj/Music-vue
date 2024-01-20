@@ -20,7 +20,11 @@ const routes = [
     name: 'manage',
     // alias: '/manage',
     path: '/manage-music',
-    component: Manage
+    component: Manage,
+    beforeEnter: (to, from, next) => {
+      console.log('Manage route guard')
+      next()
+    }
   },
   {
     path: '/manage',
@@ -40,7 +44,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   console.log('Global buard')
-  console.log(to, from)
+  // console.log(to, from)
 
   next()
 })
