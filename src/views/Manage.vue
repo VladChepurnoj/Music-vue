@@ -3,7 +3,7 @@
   <section class="container mx-auto mt-6">
     <div class="md:grid md:grid-cols-3 md:gap-4">
       <div class="col-span-1">
-        <app-upload ref="upload" />
+        <app-upload ref="upload" :addSong="addSong" />
       </div>
       <div class="col-span-2">
         <div class="bg-white rounded border border-gray-200 relative flex flex-col">
@@ -20,6 +20,7 @@
               :updateSong="updateSong"
               :index="i"
               :removeSong="removeSong"
+              :updateUnsavedFlag="updateUnsavedFlag"
             />
           </div>
         </div>
@@ -43,19 +44,14 @@ export default {
   },
   data() {
     return {
-      songs: []
+      songs: [],
+      unsavedFlag: false
     }
   },
   async created() {
     const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
 
-    snapshot.forEach((document) => {
-      const song = {
-        ...document.data(),
-        docID: document.id
-      }
-      this.songs.push(song)
-    })
+    snapshot.forEach(this.addSong)
   },
   methods: {
     updateSong(i, values) {
@@ -64,6 +60,25 @@ export default {
     },
     removeSong() {
       this.songs.splice(i, 1)
+    },
+    addSong(document) {
+      const song = {
+        ...document.data(),
+        docID: document.id
+      }
+      this.songs.push(song)
+    },
+    updateUnsavedFlag(value) {
+      this.unsavedFlag = value
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (!this.unsavedFlag) {
+      next()
+    } else {
+      // eslint-disable-next-line no-alert, no-restricted-globals
+      const leave = confirm('You have unsaved changes. Are you sure you want to leave?')
+      next(leave)
     }
   }
 
