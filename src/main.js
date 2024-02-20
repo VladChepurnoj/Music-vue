@@ -9,6 +9,7 @@ import './includes/firebase'
 import './assets/tailwind.css'
 import './assets/main.css'
 import { auth } from './includes/firebase'
+import Icon from './directives/icon'
 
 let app
 
@@ -18,7 +19,8 @@ auth.onAuthStateChanged(() => {
 
     app.use(createPinia())
     app.use(router)
-    app.use(VeeValidatePlugin, { foo: 100 })
+    app.use(VeeValidatePlugin)
+    app.directive('icon', Icon)
 
     app.mount('#app')
   }
