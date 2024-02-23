@@ -8,5 +8,19 @@ export default createI18n({
   message: {
     en,
     fr
+  },
+  numberFormats: {
+    en: {
+      currency: {
+        style: 'currency',
+        currency: 'USD'
+      }
+    },
+    ja: {
+      currency: {
+        style: 'currency',
+        currency: 'JPY'
+      }
+    }
   }
 })
