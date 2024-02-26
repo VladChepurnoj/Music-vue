@@ -1,5 +1,9 @@
 {
   "home": {
     "listen": "Ecouter de la bonne musique!"
+  },
+
+  "manage": {
+    "my_songs": "Mes chansons"
   }
 }
