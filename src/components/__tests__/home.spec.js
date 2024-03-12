@@ -5,13 +5,14 @@ import SongItem from '@/components/SongItem.vue'
 describe('Home.vue', () => {
   test('renders list of songs', () => {
     const songs = [{}, {}, {}]
-
     const component = shallowMount(Home, {
       data() {
         return {
           songs
         }
       },
+      //updated mocking methods
+
       global: {
         mocks: {
           $t: (message) => message
